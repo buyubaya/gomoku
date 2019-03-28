@@ -13,16 +13,18 @@
 				@fill="fill(index)"
 			></Box>
 			<!-- <h1>Time: {{ time || 0 }}s left</h1> -->
-			<div
-				class="playerNotification player-1"
-				:class="{ 'isActive': player == 1 }"
-				v-if="!end"
-			>PLAYER {{ player }}</div>
-			<div
-				class="playerNotification player-2"
-				:class="{ 'isActive': player == 2 }"
-				v-if="!end"
-			>PLAYER {{ player }}</div>
+			<div>
+				<div
+					class="playerNotification player-1"
+					:class="{ 'isActive': player == 1 }"
+					v-if="!end"
+				>PLAYER 1</div>
+				<div
+					class="playerNotification player-2"
+					:class="{ 'isActive': player == 2 }"
+					v-if="!end"
+				>PLAYER 2</div>
+			</div>
 			<div class="messageNotification" v-if="end">PLAYER {{ player }} WIN</div>
 		</div>
 	</div>
@@ -126,10 +128,10 @@ export default {
 				win = true;
 			}
 			// CHECK CROSS
-			var regcross01 = "1",
-			regcross02 = "2",
-			regcross11 = "1",
-			regcross12 = "2";
+			var regcross01 = `^((.{${this.col}})*(.{0,${this.col - this.max}}))1`,
+			regcross02 = `^((.{${this.col}})*(.{0,${this.col - this.max}}))2`, 
+			regcross11 = `^((.{${this.col}})*(.{${this.max - 1},${this.col - 1}}))1`,
+			regcross12 = `^((.{${this.col}})*(.{${this.max - 1},${this.col - 1}}))2`;
 			for (var i = 1; i < this.max; i++) {
 				regcross01 += ".{" + this.col + "}1";
 				regcross02 += ".{" + this.col + "}2";
@@ -142,7 +144,7 @@ export default {
 			regcross1 = new RegExp(regcross1, "g");
 			if (this.arr.join("").match(regcross0)) {
 				var index = regcross0.exec(this.arr.join(""));
-				var z0 = index.index;
+				var z0 = index[2] ? index[2].length : 0;
 				var matcharr = [];
 				for (var j = 0; j < this.max; j++) {
 					matcharr.push(z0 + this.col * j + j);
@@ -152,7 +154,7 @@ export default {
 			}
 			if (this.arr.join("").match(regcross1)) {
 				var index = regcross1.exec(this.arr.join(""));
-				var z1 = index.index;
+				var z1 = index[5] ? index[5].length : 0;
 				var matcharr = [];
 				for (var j = 0; j < this.max; j++) {
 					matcharr.push(z1 + this.col * j - j);

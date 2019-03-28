@@ -96,10 +96,10 @@ body {
 	font-size: 1.5em;
 	font-weight: bold;
 	width: 200px;
-	position: fixed;
+	position: absolute;
 	top: 25%;
 	transform: rotateX(90deg);
-	transition: 0.5s;
+	transition: transform 0.5s;
 }
 
 .playerNotification.isActive {
